@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "Youtube CORS Rewriter",
+  "author": "Liam Dyer",
+  "version": "1.0.0",
+  "description": "Proxy CORS for custom client with Youtube",
+  "content_security_policy": "script-src 'sha256-Qcd1S5XAuSTIuXH4NgKRf8If0mMbg7uAxcUkCe7azvI=' 'self' https://*.firebaseio.com/ https://api.amplitude.com https://speechify-api-polly.s3.amazonaws.com/ https://files.getspeechify.com/ https://widget.intercom.io/ https://js.intercomcdn.com/; object-src 'self'",
+  "permissions": [
+    "cookies",
+    "tabs",
+    "contextMenus",
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "*://localhost/*",
+    "https://*/**",
+    "http://*/**"
+  ],
+  "background": {
+    "scripts": ["background.js", "sapisid.js"],
+    "persistence": true
+  },
+  "content_scripts": [
+    {
+      "run_at": "document_start",
+      "matches": ["*://localhost/*"],
+      "js": ["content.js"]
+    },
+    {
+      "run_at": "document_idle",
+      "matches": ["*://www.youtube.com/embed/*"],
+      "all_frames": true,
+      "js": ["autoplay.js"]
+    }
+  ],
+  "externally_connectable": {
+    "matches": ["*://localhost/*"]
+  },
+  "browser_action": {}
+}
